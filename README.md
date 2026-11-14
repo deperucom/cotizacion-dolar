@@ -48,13 +48,24 @@ Estas características reflejan la información disponible y el ejemplo proporci
 
 El ejemplo es ilustrativo; los valores y la fecha pueden variar. El nombre de la propiedad `Cotizacion` usa mayúscula inicial y contiene una lista de objetos. `Compra` y `Venta` son valores numéricos en el ejemplo. Confirma la estructura que devuelve actualmente el endpoint antes de usarla en producción.
 
+## Identifica tu aplicación con User-Agent
+
+Se recomienda enviar un encabezado `User-Agent` personalizado en las solicitudes. Incluye el dominio o nombre de la aplicación que consulta los datos para que el proveedor pueda identificar el origen de las peticiones. Por ejemplo:
+
+```http
+User-Agent: GuiaPlaza.com_EuroxDolar/1.0
+```
+
+Sustituye `GuiaPlaza.com_EuroxDolar/1.0` por el dominio o nombre y versión de tu propio sitio o aplicación. No uses un identificador que no te pertenezca. Los ejemplos de la [guía técnica](docs/guia-tecnica.md) muestran cómo configurarlo.
+
 ## Consulta rápida
 
-Prueba desde una IP peruana:
+Prueba desde una IP peruana, cambiando el User-Agent por el de tu aplicación:
 
 ```bash
 curl --fail --silent --show-error \
   --max-time 10 \
+  --user-agent 'GuiaPlaza.com_EuroxDolar/1.0' \
   https://deperu.com/api/rest/cotizaciondolar.json
 ```
 
@@ -62,6 +73,7 @@ Para ejemplos con manejo de errores en PHP, Python, Node.js y Java, consulta la 
 
 ## Recomendaciones de consumo
 
+- Envía un `User-Agent` que identifique tu dominio o aplicación y su versión; reemplaza el ejemplo por tus propios datos.
 - El mensaje del endpoint indica que el acceso es solo para IP peruana. Una aplicación alojada fuera de Perú podría no poder consultarlo directamente.
 - No se ha especificado un límite de solicitudes ni una frecuencia de actualización de los datos en la información disponible. Consulta al proveedor y evita solicitudes innecesarias.
 - Maneja errores de red, respuestas HTTP no exitosas y JSON inválido.
