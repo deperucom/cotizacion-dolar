@@ -8,15 +8,26 @@ https://deperu.com/api/rest/cotizaciondolar.json
 
 El mensaje incluido en la respuesta de ejemplo indica que el acceso es solo para IP peruana y que la API será actualizada próximamente. No se especifica una frecuencia de actualización de los datos ni un límite de solicitudes. Consulta al proveedor para conocer las políticas vigentes. Ejecuta los ejemplos desde un entorno autorizado y evita llamadas innecesarias.
 
+## User-Agent personalizado
+
+Identifica las solicitudes con un encabezado `User-Agent` que indique el dominio o nombre de la aplicación cliente y, de ser posible, su versión. Esto ayuda al proveedor a reconocer el origen de las consultas. Por ejemplo:
+
+```http
+User-Agent: GuiaPlaza.com_EuroxDolar/1.0
+```
+
+En los ejemplos siguientes se usa ese valor. **Reemplázalo por el dominio o nombre de tu propio sitio o aplicación**; no copies un identificador que no te pertenezca.
+
 ## cURL
 
 ```bash
 curl --fail --silent --show-error \
   --max-time 10 \
+  --user-agent 'GuiaPlaza.com_EuroxDolar/1.0' \
   https://deperu.com/api/rest/cotizaciondolar.json
 ```
 
-`--fail` indica error para respuestas HTTP no exitosas y `--max-time` limita el tiempo de espera del cliente.
+`--user-agent` configura el encabezado `User-Agent`. `--fail` indica error para respuestas HTTP no exitosas y `--max-time` limita el tiempo de espera del cliente.
 
 ## Python
 
@@ -28,7 +39,14 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 URL = "https://deperu.com/api/rest/cotizaciondolar.json"
-request = Request(URL, headers={"Accept": "application/json"})
+USER_AGENT = "GuiaPlaza.com_EuroxDolar/1.0"  # Cámbialo por el dominio/nombre de tu app
+request = Request(
+    URL,
+    headers={
+        "Accept": "application/json",
+        "User-Agent": USER_AGENT,
+    },
+)
 
 try:
     with urlopen(request, timeout=10) as response:
@@ -67,12 +85,14 @@ Requiere PHP con la extensión cURL habilitada:
 ```php
 <?php
 $url = 'https://deperu.com/api/rest/cotizaciondolar.json';
+$userAgent = 'GuiaPlaza.com_EuroxDolar/1.0'; // Cámbialo por el dominio/nombre de tu app
 $curl = curl_init($url);
 
 curl_setopt_array($curl, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_CONNECTTIMEOUT => 5,
     CURLOPT_TIMEOUT => 10,
+    CURLOPT_USERAGENT => $userAgent,
     CURLOPT_HTTPHEADER => ['Accept: application/json'],
 ]);
 
@@ -116,12 +136,16 @@ Requiere Node.js 18 o posterior, que incluye `fetch`:
 
 ```js
 const url = "https://deperu.com/api/rest/cotizaciondolar.json";
+const userAgent = "GuiaPlaza.com_EuroxDolar/1.0"; // Cámbialo por el dominio/nombre de tu app
 
 async function main() {
   let response;
   try {
     response = await fetch(url, {
-      headers: { Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        "User-Agent": userAgent,
+      },
       signal: AbortSignal.timeout(10_000),
     });
   } catch (error) {
@@ -158,6 +182,8 @@ main().catch((error) => {
 });
 ```
 
+> Algunos entornos gestionados pueden controlar o restringir encabezados de solicitud. Si tu runtime no permite establecer `User-Agent` con `fetch`, utiliza un cliente HTTP que permita configurarlo y revisa la documentación de ese entorno.
+
 ## Java
 
 Ejemplo para Java 11 o posterior usando `HttpClient`:
@@ -178,6 +204,7 @@ public class CotizacionDolar {
                 .uri(URI.create("https://deperu.com/api/rest/cotizaciondolar.json"))
                 .timeout(Duration.ofSeconds(10))
                 .header("Accept", "application/json")
+                .header("User-Agent", "GuiaPlaza.com_EuroxDolar/1.0") // Sustituye por tu dominio/app
                 .GET()
                 .build();
 
@@ -199,6 +226,7 @@ public class CotizacionDolar {
 - Valida que el JSON tenga la estructura esperada y que `Cotizacion` sea una lista de objetos.
 - Comprueba la existencia y el tipo de `Compra`, `Venta`, `DolaresxEuro` y `fecha` antes de procesarlos.
 - El proveedor indica que el acceso es solo desde IP peruana. Si recibes una respuesta de bloqueo, verifica que tu entorno cumpla las condiciones y contacta al proveedor; no intentes evadir restricciones geográficas o de acceso.
+- Usa un `User-Agent` que identifique tu dominio o aplicación, en lugar de dejar un identificador genérico o copiar el ejemplo sin adaptarlo.
 
 ## Frecuencia y caché
 
