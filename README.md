@@ -1,3 +1,4 @@
+![Logo del proyecto](cotizacion-dolar_.png)
 # Tipo de cambio referencial del dólar — API de DePeru.com
 
 Repositorio informativo sobre el servicio de tipo de cambio referencial del dólar de [DePeru.com](https://www.deperu.com/tipo_cambio/) y su endpoint JSON. Reúne la URL, el formato de respuesta de ejemplo, las restricciones conocidas y ejemplos sencillos para consultar los datos desde distintas plataformas.
