@@ -8,6 +8,7 @@ Repositorio informativo sobre el servicio de tipo de cambio referencial del dól
 ## Enlaces
 
 - **Página de tipo de cambio:** https://www.deperu.com/tipo_cambio/
+- **Página de API:** https://www.deperu.com/api/
 - **Endpoint JSON:** https://deperu.com/api/rest/cotizaciondolar.json
 - **Contacto de DePeru.com:** https://deperu.com/contacto
 
